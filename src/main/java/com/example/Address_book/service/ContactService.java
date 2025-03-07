@@ -1,4 +1,3 @@
-
 package com.example.Address_book.service;
 
 import com.example.Address_book.dto.ContactDTO;
@@ -19,8 +18,15 @@ public class ContactService {
     private final AtomicLong idCounter = new AtomicLong(1);
 
     private ContactDTO convertToDTO(Contact contact) {
-        return new ContactDTO(contact.getName(), contact.getEmail(), contact.getPhone());
-    }
+                        return new ContactDTO(
+                                contact.getFullname(),
+                                contact.getAddress(),
+                                contact.getCity(),
+                                contact.getState(),
+                                contact.getZipCode(),
+                                contact.getPhoneNumber()
+                        );
+                    }
 
     public List<ContactDTO> getAllContacts() {
         return contactList.stream()
@@ -36,7 +42,15 @@ public class ContactService {
     }
 
     public ContactDTO createContact(ContactDTO contactDTO) {
-        Contact contact = new Contact(idCounter.getAndIncrement(), contactDTO.getName(), contactDTO.getEmail(), contactDTO.getPhone());
+        Contact contact = new Contact(
+                idCounter.getAndIncrement(),
+                contactDTO.getFullname(),
+                contactDTO.getAddress(),
+                contactDTO.getCity(),
+                contactDTO.getState(),
+                contactDTO.getZipCode(),
+                contactDTO.getPhoneNumber()
+        );
         contactList.add(contact);
         return convertToDTO(contact);
     }
@@ -44,9 +58,12 @@ public class ContactService {
     public Optional<ContactDTO> updateContact(Long id, ContactDTO contactDTO) {
         for (Contact contact : contactList) {
             if (contact.getId().equals(id)) {
-                contact.setName(contactDTO.getName());
-                contact.setEmail(contactDTO.getEmail());
-                contact.setPhone(contactDTO.getPhone());
+                contact.setFullname(contactDTO.getFullname());
+                contact.setAddress(contactDTO.getAddress());
+                contact.setCity(contactDTO.getCity());
+                contact.setState(contactDTO.getState());
+                contact.setZipCode(contactDTO.getZipCode());
+                contact.setPhoneNumber(contactDTO.getPhoneNumber());
                 return Optional.of(convertToDTO(contact));
             }
         }
